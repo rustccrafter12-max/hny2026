@@ -5,6 +5,7 @@
 <title>Happy New Year</title>
 
 <style>
+/* ===== Base ===== */
 body {
   margin: 0;
   height: 100vh;
@@ -16,7 +17,47 @@ body {
   overflow: hidden;
 }
 
-/* Card */
+/* ===== Splash Screen ===== */
+.splash {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #ffffff, #f2f2f7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  animation: splashOut 1s ease forwards;
+  animation-delay: 2.2s;
+}
+
+.splash-text {
+  font-size: 32px;
+  font-weight: 600;
+  color: #000;
+  animation: splashIn 1.2s ease;
+}
+
+/* iOS-like animation */
+@keyframes splashIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes splashOut {
+  to {
+    opacity: 0;
+    transform: scale(1.05);
+    pointer-events: none;
+  }
+}
+
+/* ===== Card ===== */
 .card {
   width: 320px;
   background: rgba(255,255,255,0.95);
@@ -24,6 +65,23 @@ body {
   padding: 20px;
   box-shadow: 0 20px 40px rgba(0,0,0,0.15);
   z-index: 2;
+  opacity: 0;
+  animation: showMain 0.8s ease forwards;
+  animation-delay: 2.4s;
+}
+
+@keyframes showMain {
+  to {
+    opacity: 1;
+  }
+}
+
+.title {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: #f48fb1;
+  margin-bottom: 6px;
 }
 
 .time {
@@ -70,7 +128,7 @@ body {
   cursor: pointer;
 }
 
-/* Gift Overlay */
+/* ===== Gift ===== */
 .gift-overlay {
   position: fixed;
   inset: 0;
@@ -99,7 +157,7 @@ body {
   to { transform: scale(1); opacity: 1; }
 }
 
-/* Popup */
+/* ===== Popup ===== */
 .popup {
   position: fixed;
   inset: 0;
@@ -146,48 +204,49 @@ body {
   cursor: pointer;
 }
 
-/* Hearts */
+/* ===== Hearts ===== */
 .heart {
   position: fixed;
   bottom: -20px;
-  font-size: 20px;
   animation: floatUp 4s linear forwards;
   z-index: 1;
 }
 
 @keyframes floatUp {
-  from {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-  }
-  to {
-    transform: translateY(-110vh) scale(1.5);
-    opacity: 0;
-  }
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-110vh); opacity: 0; }
 }
 </style>
 </head>
 
 <body>
 
+<!-- Splash Screen -->
+<div class="splash">
+  <div class="splash-text">To 🍊</div>
+</div>
+
+<!-- Main Card -->
 <div class="card">
+  <div class="title">🎉 Happy New Year 🎉</div>
   <div class="time">00:00</div>
   <div class="date">1 มกราคม 2569</div>
 
   <div class="chat" id="chat"></div>
-
   <button class="next-btn" id="nextBtn">อ่านต่อ</button>
 </div>
 
+<!-- Gift -->
 <div class="gift-overlay" id="giftOverlay">
   <div class="gift-box">🎁</div>
 </div>
 
+<!-- Popup -->
 <div class="popup" id="popup">
   <div class="popup-content">
     <h3>มีอะไรอยากจะบอกด้วยแหละ</h3>
     <p id="typingText"></p>
-    <button onclick="closePopup()">💖</button>
+    <button onclick="goToSong()">💖</button>
   </div>
 </div>
 
@@ -226,7 +285,6 @@ btn.addEventListener("click", () => {
 
 function showGift() {
   giftOverlay.classList.add("show");
-
   setTimeout(() => {
     giftOverlay.classList.remove("show");
     showPopup();
@@ -253,11 +311,6 @@ function typeWriter(text) {
   }, 50);
 }
 
-function closePopup() {
-  popup.classList.remove("show");
-}
-
-/* Hearts animation */
 function startHearts() {
   setInterval(() => {
     const heart = document.createElement("div");
@@ -266,9 +319,12 @@ function startHearts() {
     heart.style.left = Math.random() * 100 + "vw";
     heart.style.fontSize = 16 + Math.random() * 20 + "px";
     document.body.appendChild(heart);
-
     setTimeout(() => heart.remove(), 4000);
   }, 300);
+}
+
+function goToSong() {
+  window.location.href = "https://www.youtube.com/watch?v=3qk6f9d1QqE";
 }
 </script>
 
