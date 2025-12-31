@@ -2,20 +2,32 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>Happy New Year 💖</title>
+  <title>Happy New Year</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="card">
-  <h1>🎁 Happy New Year 🎉</h1>
-  <p class="date">1 มกราคม 2026</p>
+  <div class="time">00:00</div>
+  <div class="date">1 มกราคม 2569</div>
 
-  <div id="message">
-    <p>มีบางอย่างอยากบอกเธอ...</p>
+  <div class="chat" id="chat"></div>
+
+  <button class="next-btn" id="nextBtn">อ่านต่อ</button>
+</div>
+
+<!-- Gift -->
+<div class="gift-overlay" id="giftOverlay">
+  <div class="gift-box">🎁</div>
+</div>
+
+<!-- Popup -->
+<div class="popup" id="popup">
+  <div class="popup-content">
+    <h3>มีอะไรอยากจะบอกด้วยแหละ</h3>
+    <p id="typingText"></p>
+    <button id="closePopup">💖</button>
   </div>
-
-  <button onclick="nextMessage()">อ่านต่อ</button>
 </div>
 
 <script src="script.js"></script>
