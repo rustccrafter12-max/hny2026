@@ -5,7 +5,6 @@
 <title>Happy New Year</title>
 
 <style>
-/* ===== Base ===== */
 body {
   margin: 0;
   height: 100vh;
@@ -17,7 +16,7 @@ body {
   overflow: hidden;
 }
 
-/* ===== Splash Screen ===== */
+/* Splash */
 .splash {
   position: fixed;
   inset: 0;
@@ -33,20 +32,6 @@ body {
 .splash-text {
   font-size: 32px;
   font-weight: 600;
-  color: #000;
-  animation: splashIn 1.2s ease;
-}
-
-/* iOS-like animation */
-@keyframes splashIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
 }
 
 @keyframes splashOut {
@@ -57,7 +42,7 @@ body {
   }
 }
 
-/* ===== Card ===== */
+/* Card */
 .card {
   width: 320px;
   background: rgba(255,255,255,0.95);
@@ -71,9 +56,7 @@ body {
 }
 
 @keyframes showMain {
-  to {
-    opacity: 1;
-  }
+  to { opacity: 1; }
 }
 
 .title {
@@ -81,7 +64,6 @@ body {
   font-size: 18px;
   font-weight: 600;
   color: #f48fb1;
-  margin-bottom: 6px;
 }
 
 .time {
@@ -108,12 +90,6 @@ body {
   padding: 10px 14px;
   margin-bottom: 10px;
   font-size: 14px;
-  animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 .next-btn {
@@ -124,11 +100,10 @@ body {
   border-radius: 999px;
   background: linear-gradient(90deg, #f8a1c4, #9fd3ff);
   color: white;
-  font-size: 14px;
   cursor: pointer;
 }
 
-/* ===== Gift ===== */
+/* Gift */
 .gift-overlay {
   position: fixed;
   inset: 0;
@@ -149,15 +124,9 @@ body {
 
 .gift-box {
   font-size: 120px;
-  animation: pop 0.6s ease forwards;
 }
 
-@keyframes pop {
-  from { transform: scale(0.3); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-/* ===== Popup ===== */
+/* Popup */
 .popup {
   position: fixed;
   inset: 0;
@@ -182,17 +151,6 @@ body {
   border-radius: 20px;
   padding: 20px;
   text-align: center;
-  animation: pop 0.4s ease;
-}
-
-.popup-content h3 {
-  margin-top: 0;
-  font-size: 16px;
-}
-
-.popup-content p {
-  font-size: 14px;
-  min-height: 60px;
 }
 
 .popup-content button {
@@ -204,29 +162,28 @@ body {
   cursor: pointer;
 }
 
-/* ===== Hearts ===== */
+/* Hearts */
 .heart {
   position: fixed;
   bottom: -20px;
   animation: floatUp 4s linear forwards;
-  z-index: 1;
 }
 
 @keyframes floatUp {
-  from { transform: translateY(0); opacity: 1; }
-  to { transform: translateY(-110vh); opacity: 0; }
+  to {
+    transform: translateY(-110vh);
+    opacity: 0;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- Splash Screen -->
 <div class="splash">
   <div class="splash-text">To 🍊</div>
 </div>
 
-<!-- Main Card -->
 <div class="card">
   <div class="title">🎉 Happy New Year 🎉</div>
   <div class="time">00:00</div>
@@ -236,12 +193,10 @@ body {
   <button class="next-btn" id="nextBtn">อ่านต่อ</button>
 </div>
 
-<!-- Gift -->
 <div class="gift-overlay" id="giftOverlay">
   <div class="gift-box">🎁</div>
 </div>
 
-<!-- Popup -->
 <div class="popup" id="popup">
   <div class="popup-content">
     <h3>มีอะไรอยากจะบอกด้วยแหละ</h3>
@@ -266,65 +221,48 @@ const giftOverlay = document.getElementById("giftOverlay");
 const popup = document.getElementById("popup");
 const typingText = document.getElementById("typingText");
 
-btn.addEventListener("click", () => {
+btn.onclick = () => {
   if (index < messages.length) {
-    const bubble = document.createElement("div");
-    bubble.className = "bubble";
-    bubble.textContent = messages[index];
-    chat.appendChild(bubble);
-    chat.scrollTop = chat.scrollHeight;
-    index++;
-
-    if (index === messages.length) {
-      btn.textContent = "เปิดของขวัญ 🎁";
-    }
+    const d = document.createElement("div");
+    d.className = "bubble";
+    d.textContent = messages[index++];
+    chat.appendChild(d);
+    if (index === messages.length) btn.textContent = "เปิดของขวัญ 🎁";
   } else {
-    showGift();
+    giftOverlay.classList.add("show");
+    setTimeout(() => {
+      giftOverlay.classList.remove("show");
+      popup.classList.add("show");
+      typeText("ขอบคุณที่ปีที่แล้วเข้ามาในชีวิตนะครับ เป็นปีที่มีความสุขมากๆ 💖");
+    }, 1200);
   }
-});
+};
 
-function showGift() {
-  giftOverlay.classList.add("show");
-  setTimeout(() => {
-    giftOverlay.classList.remove("show");
-    showPopup();
-  }, 1200);
-}
-
-function showPopup() {
-  popup.classList.add("show");
-  typeWriter(
-    "ขอบคุณที่ปีที่แล้วเข้ามาในชีวิตนะครับ เป็นปีที่มีความสุขมากๆ 💖"
-  );
-}
-
-function typeWriter(text) {
-  typingText.textContent = "";
+function typeText(text) {
   let i = 0;
-  const interval = setInterval(() => {
-    typingText.textContent += text[i];
-    i++;
+  typingText.textContent = "";
+  const t = setInterval(() => {
+    typingText.textContent += text[i++];
     if (i >= text.length) {
-      clearInterval(interval);
-      startHearts();
+      clearInterval(t);
+      setInterval(spawnHeart, 300);
     }
   }, 50);
 }
 
-function startHearts() {
-  setInterval(() => {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.textContent = "💗";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.fontSize = 16 + Math.random() * 20 + "px";
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 4000);
-  }, 300);
+function spawnHeart() {
+  const h = document.createElement("div");
+  h.className = "heart";
+  h.textContent = "💗";
+  h.style.left = Math.random() * 100 + "vw";
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 4000);
 }
 
+/* 👉 Spotify link อยู่ตรงนี้ */
 function goToSong() {
-  window.location.href = "https://www.youtube.com/watch?v=3qk6f9d1QqE";
+  window.location.href =
+    "https://open.spotify.com/track/3m1a6LZz3c7P4JrjvKZxkR";
 }
 </script>
 
