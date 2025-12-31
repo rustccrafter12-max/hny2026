@@ -1,159 +1,85 @@
-body {
-  margin: 0;
-  height: 100vh;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  background: linear-gradient(135deg, #f7cfdc, #cfe7f7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-}
+const messages = [
+  "ขอให้มีความสุขมากๆ",
+  "ขอให้สมหวังทุกอย่าง",
+  "เป็นปีที่รอยยิ้มเปื้อนหน้า",
+  "รักตัวเองมากๆ",
+  "เป็นปีที่ดีไม่มีเรื่องให้ทุกข์ใจเลยนะ"
+];
 
-/* Card */
-.card {
-  width: 320px;
-  background: rgba(255,255,255,0.95);
-  border-radius: 24px;
-  padding: 20px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-  z-index: 2;
-}
+let index = 0;
 
-.time {
-  font-size: 42px;
-  text-align: center;
-  color: #5a4b81;
-  font-weight: 600;
-}
+const chat = document.getElementById("chat");
+const btn = document.getElementById("nextBtn");
+const giftOverlay = document.getElementById("giftOverlay");
+const popup = document.getElementById("popup");
+const typingText = document.getElementById("typingText");
+const closePopupBtn = document.getElementById("closePopup");
 
-.date {
-  text-align: center;
-  color: #777;
-  margin-bottom: 16px;
-}
+btn.addEventListener("click", () => {
+  if (index < messages.length) {
+    addBubble(messages[index]);
+    index++;
 
-.chat {
-  max-height: 260px;
-  overflow-y: auto;
-}
-
-.bubble {
-  background: #fff1f5;
-  border-radius: 16px;
-  padding: 10px 14px;
-  margin-bottom: 10px;
-  font-size: 14px;
-  animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.next-btn {
-  width: 100%;
-  margin-top: 12px;
-  padding: 12px;
-  border: none;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #f8a1c4, #9fd3ff);
-  color: white;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-/* Gift */
-.gift-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(255,255,255,0.85);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: 0.4s;
-  z-index: 5;
-}
-
-.gift-overlay.show {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.gift-box {
-  font-size: 120px;
-  animation: pop 0.6s ease forwards;
-}
-
-@keyframes pop {
-  from { transform: scale(0.3); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-/* Popup */
-.popup {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: 0.3s;
-  z-index: 10;
-}
-
-.popup.show {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.popup-content {
-  width: 280px;
-  background: white;
-  border-radius: 20px;
-  padding: 20px;
-  text-align: center;
-  animation: pop 0.4s ease;
-}
-
-.popup-content h3 {
-  margin-top: 0;
-  font-size: 16px;
-}
-
-.popup-content p {
-  font-size: 14px;
-  min-height: 60px;
-}
-
-.popup-content button {
-  border: none;
-  background: #f8a1c4;
-  color: white;
-  padding: 8px 20px;
-  border-radius: 999px;
-  cursor: pointer;
-}
-
-/* Hearts */
-.heart {
-  position: fixed;
-  bottom: -20px;
-  animation: floatUp 4s linear forwards;
-  z-index: 1;
-}
-
-@keyframes floatUp {
-  from {
-    transform: translateY(0) scale(1);
-    opacity: 1;
+    if (index === messages.length) {
+      btn.textContent = "เปิดของขวัญ 🎁";
+    }
+  } else {
+    showGift();
   }
-  to {
-    transform: translateY(-110vh) scale(1.5);
-    opacity: 0;
-  }
+});
+
+closePopupBtn.addEventListener("click", () => {
+  popup.classList.remove("show");
+});
+
+function addBubble(text) {
+  const bubble = document.createElement("div");
+  bubble.className = "bubble";
+  bubble.textContent = text;
+  chat.appendChild(bubble);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function showGift() {
+  giftOverlay.classList.add("show");
+
+  setTimeout(() => {
+    giftOverlay.classList.remove("show");
+    showPopup();
+  }, 1200);
+}
+
+function showPopup() {
+  popup.classList.add("show");
+  typeWriter(
+    "ขอบคุณที่ปีที่แล้วเข้ามาในชีวิตนะครับ เป็นปีที่มีความสุขมากๆ 💖"
+  );
+}
+
+function typeWriter(text) {
+  typingText.textContent = "";
+  let i = 0;
+
+  const interval = setInterval(() => {
+    typingText.textContent += text[i];
+    i++;
+
+    if (i >= text.length) {
+      clearInterval(interval);
+      startHearts();
+    }
+  }, 50);
+}
+
+function startHearts() {
+  setInterval(() => {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.textContent = "💗";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = 16 + Math.random() * 20 + "px";
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 4000);
+  }, 300);
 }
