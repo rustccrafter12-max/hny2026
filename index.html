@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>Happy New Year 💖</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: sans-serif;
+      background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      width: 300px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      background: pink;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h2>🎁 Happy New Year 🎉</h2>
+  <p id="msg">มีบางอย่างอยากบอกเธอ…</p>
+  <button onclick="next()">อ่านต่อ</button>
+</div>
+
+<script>
+  const msgs = [
+    "Happy New Year 💕",
+    "ขอบคุณที่อยู่ข้างกันมาตลอด",
+    "ปีนี้อาจไม่ง่ายเสมอไป",
+    "แต่มีเธอก็พอแล้ว",
+    "รักเธอเสมอ 💖"
+  ];
+  let i = 0;
+  function next() {
+    if (i < msgs.length) {
+      document.getElementById("msg").innerText = msgs[i];
+      i++;
+    }
+  }
+</script>
+
+</body>
+</html>
