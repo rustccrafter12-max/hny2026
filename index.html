@@ -260,9 +260,15 @@ function spawnHeart() {
 }
 
 /* 👉 Spotify link อยู่ตรงนี้ */
-function goToSong() {
-  window.location.href =
-    "https://open.spotify.com/track/3m1a6LZz3c7P4JrjvKZxkR";
+  function goToSong() {
+  // พยายามเปิด Spotify App ก่อน
+  window.location.href = "spotify:track:3m1a6LZz3c7P4JrjvKZxkR";
+
+  // ถ้าไม่มีแอป ให้ fallback ไป Spotify Web
+  setTimeout(() => {
+    window.location.href =
+      "https://open.spotify.com/track/3m1a6LZz3c7P4JrjvKZxkR";
+  }, 800);
 }
 </script>
 
